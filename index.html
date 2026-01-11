@@ -6,23 +6,33 @@
     <title>ExcelSQLMaster | Select Plan</title>
     <style>
         :root { --primary: #217346; --dark: #1a1a1a; --gray: #666; --light-bg: #f8fafc; }
-        body { font-family: 'Inter', -apple-system, sans-serif; color: var(--dark); background: var(--light-bg); margin: 0; }
-        header { padding: 80px 20px 20px; text-align: center; }
-        h1 { font-size: 3.5rem; color: var(--primary); margin: 0; letter-spacing: -1px; }
-        .tagline { font-size: 1.25rem; color: var(--gray); margin-bottom: 50px; }
+        body { font-family: 'Inter', sans-serif; color: var(--dark); background: var(--light-bg); margin: 0; }
+        header { padding: 60px 20px 20px; text-align: center; }
+        h1 { font-size: 3.2rem; color: var(--primary); margin: 0; letter-spacing: -1px; }
+        .tagline { font-size: 1.2rem; color: var(--gray); margin-bottom: 60px; }
 
-        .pricing-grid { display: flex; justify-content: center; gap: 30px; max-width: 1100px; margin: 0 auto; padding: 20px; flex-wrap: wrap; }
+        /* Tüm kutuları aynı yükseklikte tutan ayar */
+        .pricing-grid { 
+            display: flex; 
+            justify-content: center; 
+            align-items: stretch; /* Kutuları boydan eşitler */
+            gap: 25px; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
         
         .card { 
             background: white; border: 2px solid #e2e8f0; border-radius: 24px; padding: 40px; 
-            text-align: center; width: 300px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer; display: flex; flex-direction: column; position: relative; box-sizing: border-box;
+            text-align: center; width: 320px; transition: all 0.3s ease;
+            cursor: pointer; display: flex; flex-direction: column; position: relative; 
         }
 
         .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
 
-        /* Highlight Yearly as the winner */
-        .card.best-value { border: 2px solid var(--primary); background: #f0fff4; }
+        /* Yearly Best Value Styling */
+        .card.best-value { border: 2px solid var(--primary); background: #f0fff4; transform: scale(1.05); z-index: 2; }
+        .card.best-value:hover { transform: scale(1.05) translateY(-10px); }
         
         .badge { 
             position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
@@ -30,38 +40,42 @@
             border-radius: 20px; font-size: 0.85rem; font-weight: bold; white-space: nowrap;
         }
 
-        .plan-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
-        .price { font-size: 3.5rem; font-weight: 800; margin: 10px 0; }
+        .plan-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+        .price { font-size: 3.2rem; font-weight: 800; margin: 10px 0; }
         .price span { font-size: 1rem; color: var(--gray); font-weight: 400; }
         
         .savings-tag { background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-bottom: 20px; }
         .no-savings { height: 31px; margin-bottom: 20px; }
 
-        .features { list-style: none; padding: 0; margin: 0 0 30px; text-align: left; flex-grow: 1; border-top: 1px solid #eee; padding-top: 20px; }
+        .features { list-style: none; padding: 0; margin: 20px 0 30px; text-align: left; flex-grow: 1; border-top: 1px solid #eee; padding-top: 20px; }
         .features li { margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: center; }
         .features li::before { content: "✓"; color: var(--primary); margin-right: 10px; font-weight: bold; }
 
         .btn { 
-            background: #f1f5f9; color: var(--dark); padding: 18px; 
+            background: #f1f5f9; color: var(--dark); padding: 16px; 
             border-radius: 14px; text-decoration: none; font-weight: bold; 
-            transition: all 0.2s; border: none; font-size: 1.1rem;
+            transition: all 0.2s; border: none; font-size: 1.1rem; margin-top: auto;
         }
         
         .card:hover .btn { background: var(--primary); color: white; }
 
-        footer { padding: 100px 20px 40px; text-align: center; color: var(--gray); font-size: 0.85rem; }
+        footer { padding: 60px 20px; text-align: center; color: var(--gray); font-size: 0.85rem; }
         .links { margin-top: 15px; }
-        .links a { color: var(--gray); text-decoration: none; margin: 0 15px; font-weight: 500; }
-        .links a:hover { color: var(--primary); }
+        .links a { color: var(--gray); text-decoration: none; margin: 0 15px; }
 
-        @media (max-width: 768px) { .pricing-grid { flex-direction: column; align-items: center; } .card { width: 100%; max-width: 350px; } }
+        /* Mobil görünümde kutular alt alta gelir */
+        @media (max-width: 900px) { 
+            .pricing-grid { flex-direction: column; align-items: center; } 
+            .card.best-value { transform: none; margin: 20px 0; }
+            .card.best-value:hover { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
 
     <header>
         <h1>ExcelSQLMaster</h1>
-        <p class="tagline">Turbocharge your data analysis with SQL power.</p>
+        <p class="tagline">The most efficient way to query Excel data.</p>
     </header>
 
     <div class="pricing-grid">
@@ -77,18 +91,6 @@
             <div class="btn">Select Plan</div>
         </div>
 
-        <div class="card" onclick="window.location.href='#QUARTERLY_URL'">
-            <div class="plan-name">Quarterly</div>
-            <div class="price">$4.99<span>/3mo</span></div>
-            <div class="savings-tag">Save 16%</div>
-            <ul class="features">
-                <li>Full SQL Core Engine</li>
-                <li>Unlimited Queries</li>
-                <li>Priority In-App Support</li>
-            </ul>
-            <div class="btn">Select Plan</div>
-        </div>
-
         <div class="card best-value" onclick="window.location.href='#YEARLY_URL'">
             <div class="badge">BEST VALUE</div>
             <div class="plan-name">Yearly</div>
@@ -97,15 +99,27 @@
             <ul class="features">
                 <li>Full SQL Core Engine</li>
                 <li>Unlimited Queries</li>
-                <li>VIP In-App Support</li>
+                <li>Priority In-App Support</li>
                 <li>All Future Updates</li>
+            </ul>
+            <div class="btn">Select Plan</div>
+        </div>
+
+        <div class="card" onclick="window.location.href='#QUARTERLY_URL'">
+            <div class="plan-name">Quarterly</div>
+            <div class="price">$4.99<span>/3mo</span></div>
+            <div class="savings-tag">Save 16%</div>
+            <ul class="features">
+                <li>Full SQL Core Engine</li>
+                <li>Unlimited Queries</li>
+                <li>In-App Support</li>
             </ul>
             <div class="btn">Select Plan</div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 ExcelSQLMaster. All subscriptions managed by Lemon Squeezy.</p>
+        <p>&copy; 2026 ExcelSQLMaster. Subscriptions managed by Lemon Squeezy.</p>
         <div class="links">
             <a href="privacy.html">Privacy Policy</a>
             <a href="terms.html">Terms of Service</a>
