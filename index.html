@@ -1,134 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExcelSQLMaster | Select Plan</title>
+    <title>ExcelSQLMaster - Pricing</title>
+    <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
     <style>
-        :root { --primary: #217346; --dark: #1a1a1a; --gray: #666; --border: #e2e8f0; }
-        body { font-family: 'Inter', sans-serif; color: var(--dark); background: #f8fafc; margin: 0; }
-        header { padding: 60px 20px 40px; text-align: center; }
-        h1 { font-size: 3rem; color: var(--primary); margin: 0; }
-        .tagline { font-size: 1.2rem; color: var(--gray); margin-top: 10px; }
-
-        .pricing-grid { 
-            display: flex; 
-            justify-content: center; 
-            align-items: stretch; /* Kutuları boydan eşitler, kaymayı engeller */
-            gap: 20px; 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            padding: 20px; 
+        :root {
+            --primary: #111827;
+            --secondary: #6b7280;
+            --success: #059669;
+            --bg: #f9fafb;
+            --card-border: #e5e7eb;
         }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 0; line-height: 1.5; }
+        .wrapper { max-width: 1100px; margin: 80px auto; padding: 20px; text-align: center; }
+        .header-text { margin-bottom: 50px; }
+        .header-text h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .header-text p { color: var(--secondary); font-size: 1.1rem; }
+
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px; }
         
-        .card { 
-            background: white; 
-            border: 2px solid var(--border); 
-            border-radius: 20px; 
-            padding: 35px; 
-            text-align: center; 
-            width: 320px; 
-            transition: all 0.2s ease-in-out;
-            cursor: pointer; 
-            display: flex; 
-            flex-direction: column; 
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        /* Sadece hover olan kutu canlanır */
-        .card:hover { 
-            transform: translateY(-5px); 
-            border-color: var(--primary); 
-            background: #fafffb; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .card:hover .btn { background: var(--primary); color: white; }
-
-        .badge { 
-            position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
-            background: var(--primary); color: white; padding: 4px 15px; 
-            border-radius: 20px; font-size: 0.75rem; font-weight: bold; 
-        }
-
-        .plan-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; }
-        .price { font-size: 3rem; font-weight: 800; margin: 10px 0; }
-        .price span { font-size: 0.9rem; color: var(--gray); font-weight: 400; }
+        .card { background: white; border: 1px solid var(--card-border); border-radius: 20px; padding: 40px 32px; position: relative; transition: transform 0.2s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
         
-        .savings-tag { color: #166534; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; height: 20px; }
-        .no-savings { height: 20px; margin-bottom: 15px; }
+        .best-value { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #064e3b; color: white; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; }
 
-        .features { list-style: none; padding: 20px 0 0; margin: 20px 0; text-align: left; flex-grow: 1; border-top: 1px solid #eee; }
-        .features li { margin-bottom: 10px; font-size: 0.9rem; display: flex; align-items: center; }
-        .features li::before { content: "✓"; color: var(--primary); margin-right: 8px; font-weight: bold; }
+        .plan-name { font-size: 1.25rem; font-weight: 600; color: var(--primary); }
+        .price { font-size: 3rem; font-weight: 800; margin: 20px 0 10px; }
+        .price span { font-size: 1.125rem; color: var(--secondary); font-weight: 400; }
+        .save-badge { color: var(--success); font-weight: 600; font-size: 0.95rem; height: 24px; }
 
-        .btn { 
-            background: #f1f5f9; color: var(--dark); padding: 15px; 
-            border-radius: 12px; text-decoration: none; font-weight: bold; 
-            transition: 0.2s; border: none; font-size: 1rem; margin-top: auto;
-        }
+        .features { margin: 30px 0; padding: 0; list-style: none; text-align: left; flex-grow: 1; }
+        .feature-item { display: flex; align-items: center; margin-bottom: 16px; color: #4b5563; font-size: 0.95rem; }
+        .feature-item svg { width: 20px; height: 20px; color: var(--success); margin-right: 12px; flex-shrink: 0; }
 
-        @media (max-width: 900px) { 
-            .pricing-grid { flex-direction: column; align-items: center; } 
-            .card { width: 100%; max-width: 350px; }
-        }
+        .lemonsqueezy-button { display: block; background: #f3f4f6; color: var(--primary); text-decoration: none; padding: 14px; border-radius: 10px; font-weight: 600; transition: 0.2s; margin-top: auto; }
+        .lemonsqueezy-button:hover { background: #e5e7eb; }
+
+        footer { border-top: 1px solid var(--card-border); padding-top: 40px; color: var(--secondary); font-size: 0.9rem; }
+        .footer-links { margin-top: 15px; }
+        .footer-links a { color: var(--secondary); text-decoration: none; margin: 0 10px; }
+        .footer-links a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>ExcelSQLMaster</h1>
-        <p class="tagline">Simple plans for powerful SQL querying.</p>
-    </header>
+<div class="wrapper">
+    <div class="header-text">
+        <p>Simple plans for powerful SQL querying.</p>
+    </div>
 
     <div class="pricing-grid">
-        <div class="card" onclick="window.location.href='#MONTHLY_URL'">
+        <div class="card">
             <div class="plan-name">Monthly</div>
             <div class="price">$1.99<span>/mo</span></div>
-            <div class="no-savings"></div>
+            <div class="save-badge"></div>
             <ul class="features">
-                <li>Full SQL Core Engine</li>
-                <li>Unlimited Queries</li>
-                <li>In-App Support</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Full SQL Core Engine</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Unlimited Queries</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>In-App Support</li>
             </ul>
-            <div class="btn">Select Plan</div>
+            <a href="https://yourstore.lemonsqueezy.com/checkout/buy/MONTHLY_ID" class="lemonsqueezy-button">Select Plan</a>
         </div>
 
-        <div class="card" onclick="window.location.href='#QUARTERLY_URL'">
+        <div class="card">
             <div class="plan-name">Quarterly</div>
             <div class="price">$4.99<span>/3mo</span></div>
-            <div class="savings-tag">Save 16%</div>
+            <div class="save-badge">Save 16%</div>
             <ul class="features">
-                <li>Full SQL Core Engine</li>
-                <li>Unlimited Queries</li>
-                <li>In-App Support</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Full SQL Core Engine</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Unlimited Queries</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>In-App Support</li>
             </ul>
-            <div class="btn">Select Plan</div>
+            <a href="https://yourstore.lemonsqueezy.com/checkout/buy/QUARTERLY_ID" class="lemonsqueezy-button">Select Plan</a>
         </div>
 
-        <div class="card" onclick="window.location.href='#YEARLY_URL'">
-            <div class="badge">BEST VALUE</div>
+        <div class="card">
+            <div class="best-value">BEST VALUE</div>
             <div class="plan-name">Yearly</div>
             <div class="price">$14.99<span>/yr</span></div>
-            <div class="savings-tag">Save 37%</div>
+            <div class="save-badge">Save 37%</div>
             <ul class="features">
-                <li>Full SQL Core Engine</li>
-                <li>Unlimited Queries</li>
-                <li>Priority Support</li>
-                <li>All Future Updates</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Full SQL Core Engine</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Unlimited Queries</li>
+                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>In-App Support</li>
             </ul>
-            <div class="btn">Select Plan</div>
+            <a href="https://yourstore.lemonsqueezy.com/checkout/buy/YEARLY_ID" class="lemonsqueezy-button">Select Plan</a>
         </div>
     </div>
 
     <footer>
-        <div style="text-align:center; padding: 40px 0; color: var(--gray); font-size: 0.85rem;">
-            <p>&copy; 2026 ExcelSQLMaster. Payments by Lemon Squeezy.</p>
-            <a href="privacy.html" style="color:var(--gray); text-decoration:none; margin:0 10px;">Privacy Policy</a> | 
-            <a href="terms.html" style="color:var(--gray); text-decoration:none; margin:0 10px;">Terms of Service</a>
+        <p>© 2026 ExcelSQLMaster. Payments by Lemon Squeezy.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
         </div>
     </footer>
+</div>
 
 </body>
 </html>
