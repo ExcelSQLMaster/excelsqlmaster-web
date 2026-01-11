@@ -14,7 +14,7 @@
         .pricing-grid { 
             display: flex; 
             justify-content: center; 
-            align-items: stretch; 
+            align-items: stretch; /* Kutuları boydan eşitler, kaymayı engeller */
             gap: 20px; 
             max-width: 1100px; 
             margin: 0 auto; 
@@ -28,27 +28,23 @@
             padding: 35px; 
             text-align: center; 
             width: 320px; 
-            transition: all 0.25s ease;
+            transition: all 0.2s ease-in-out;
             cursor: pointer; 
             display: flex; 
             flex-direction: column; 
             position: relative;
+            box-sizing: border-box;
         }
 
-        /* Mantıklı Hover: Sadece üzerine gelinen yeşil olur ve büyür */
+        /* Sadece hover olan kutu canlanır */
         .card:hover { 
-            transform: translateY(-8px); 
+            transform: translateY(-5px); 
             border-color: var(--primary); 
-            background: #f0fff4; /* Sadece hover olan yeşilimsi olur */
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            z-index: 10;
+            background: #fafffb; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
-        /* Üzerine gelindiğinde butonu da renklendir */
-        .card:hover .btn { 
-            background: var(--primary); 
-            color: white; 
-        }
+        .card:hover .btn { background: var(--primary); color: white; }
 
         .badge { 
             position: absolute; top: -12px; left: 50%; transform: translateX(-50%); 
@@ -60,7 +56,7 @@
         .price { font-size: 3rem; font-weight: 800; margin: 10px 0; }
         .price span { font-size: 0.9rem; color: var(--gray); font-weight: 400; }
         
-        .savings-tag { color: #166534; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; }
+        .savings-tag { color: #166534; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; height: 20px; }
         .no-savings { height: 20px; margin-bottom: 15px; }
 
         .features { list-style: none; padding: 20px 0 0; margin: 20px 0; text-align: left; flex-grow: 1; border-top: 1px solid #eee; }
@@ -83,7 +79,7 @@
 
     <header>
         <h1>ExcelSQLMaster</h1>
-        <p class="tagline">Query spreadsheets with SQL. Select your plan.</p>
+        <p class="tagline">Simple plans for powerful SQL querying.</p>
     </header>
 
     <div class="pricing-grid">
@@ -91,6 +87,18 @@
             <div class="plan-name">Monthly</div>
             <div class="price">$1.99<span>/mo</span></div>
             <div class="no-savings"></div>
+            <ul class="features">
+                <li>Full SQL Core Engine</li>
+                <li>Unlimited Queries</li>
+                <li>In-App Support</li>
+            </ul>
+            <div class="btn">Select Plan</div>
+        </div>
+
+        <div class="card" onclick="window.location.href='#QUARTERLY_URL'">
+            <div class="plan-name">Quarterly</div>
+            <div class="price">$4.99<span>/3mo</span></div>
+            <div class="savings-tag">Save 16%</div>
             <ul class="features">
                 <li>Full SQL Core Engine</li>
                 <li>Unlimited Queries</li>
@@ -107,29 +115,17 @@
             <ul class="features">
                 <li>Full SQL Core Engine</li>
                 <li>Unlimited Queries</li>
-                <li>Priority In-App Support</li>
+                <li>Priority Support</li>
                 <li>All Future Updates</li>
-            </ul>
-            <div class="btn">Select Plan</div>
-        </div>
-
-        <div class="card" onclick="window.location.href='#QUARTERLY_URL'">
-            <div class="plan-name">Quarterly</div>
-            <div class="price">$4.99<span>/3mo</span></div>
-            <div class="savings-tag">Save 16%</div>
-            <ul class="features">
-                <li>Full SQL Core Engine</li>
-                <li>Unlimited Queries</li>
-                <li>In-App Support</li>
             </ul>
             <div class="btn">Select Plan</div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 ExcelSQLMaster. Payments by Lemon Squeezy.</p>
-        <div class="links">
-            <a href="privacy.html" style="color:var(--gray); text-decoration:none; margin:0 10px;">Privacy Policy</a>
+        <div style="text-align:center; padding: 40px 0; color: var(--gray); font-size: 0.85rem;">
+            <p>&copy; 2026 ExcelSQLMaster. Payments by Lemon Squeezy.</p>
+            <a href="privacy.html" style="color:var(--gray); text-decoration:none; margin:0 10px;">Privacy Policy</a> | 
             <a href="terms.html" style="color:var(--gray); text-decoration:none; margin:0 10px;">Terms of Service</a>
         </div>
     </footer>
