@@ -11,6 +11,7 @@
         h1 { font-size: 3.5rem; margin: 0; color: var(--primary); letter-spacing: -1px; }
         .tagline { font-size: 1.25rem; color: var(--gray); max-width: 600px; margin: 20px auto; }
         
+        /* Pricing Grid and Card Layout Fixes */
         .pricing-grid { display: flex; justify-content: center; gap: 30px; max-width: 1000px; margin: 40px auto; padding: 0 20px; flex-wrap: wrap; }
         .card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); position: relative; display: flex; flex-direction: column; width: 280px; box-sizing: border-box; }
         .card.popular { border: 2px solid var(--primary); transform: scale(1.05); z-index: 10; }
@@ -24,7 +25,8 @@
         .features li { margin-bottom: 12px; display: flex; align-items: center; font-size: 0.95rem; }
         .features li::before { content: "✓"; color: var(--primary); font-weight: bold; margin-right: 10px; }
         
-        .btn { background: var(--primary); color: white; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: bold; transition: opacity 0.2s; text-align: center; display: block; }
+        /* Button Fixes */
+        .btn { background: var(--primary); color: white; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: bold; transition: opacity 0.2s; text-align: center; display: block; margin-top: auto; }
         .btn:hover { opacity: 0.9; }
         .btn.secondary { background: #edf2f7; color: var(--dark); }
 
@@ -50,7 +52,7 @@
             <ul class="features">
                 <li>Full SQL Core Engine</li>
                 <li>Unlimited Queries</li>
-                <li>Standard Support</li>
+                <li>Email Support</li>
                 <li>Instant Activation</li>
             </ul>
             <a href="#" class="btn secondary">Coming Soon</a>
@@ -63,7 +65,7 @@
             <ul class="features">
                 <li>Full SQL Core Engine</li>
                 <li>Unlimited Queries</li>
-                <li>Priority Support</li>
+                <li>Priority Email Support</li>
                 <li>Instant Activation</li>
             </ul>
             <a href="#" class="btn">Coming Soon</a>
@@ -85,9 +87,9 @@
     <footer>
         <p>&copy; 2026 ExcelSQLMaster. All rights reserved.</p>
         <div class="links">
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms of Service</a>
-            <a href="#">Contact</a>
+            <a href="privacy.html">Privacy Policy</a> | 
+            <a href="terms.html">Terms of Service</a> | 
+            <a href="mailto:support@excelsqlmaster.com">Support</a>
         </div>
     </footer>
 
