@@ -88,10 +88,10 @@
         .footnote { font-size: 0.82rem; color: var(--g1); margin-top: 1.5rem; line-height: 1.6; text-align: center; }
 
         /* SCREENSHOTS */
-        .screenshots { display: flex; flex-direction: column; gap: 3rem; max-width: 820px; margin: 0 auto; }
+        .screenshots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; max-width: 980px; margin: 0 auto; }
         .ss-item { text-align: center; }
-        .ss-item img { width: 100%; border-radius: 10px; border: 1px solid var(--g4); box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-        .ss-caption { font-size: 0.88rem; color: var(--g2); margin-top: 0.8rem; line-height: 1.5; }
+        .ss-item img { width: 100%; border-radius: 8px; border: 1px solid var(--g4); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .ss-caption { font-size: 0.78rem; color: var(--g2); margin-top: 0.5rem; }
 
         /* SECTIONS */
         section { padding: 5rem 1.5rem; }
@@ -139,7 +139,7 @@
             .nav-r a:not(.nav-cta) { display: none; }
             .cards { flex-direction: column; align-items: center; }
             .ds-item { font-size: 0.84rem; padding: 0.55rem 1rem; }
-            .screenshots { gap: 2rem; }
+            .screenshots { grid-template-columns: 1fr; gap: 1.5rem; }
         }
     </style>
 </head>
@@ -162,27 +162,6 @@
 <div class="hero">
     <h1>ExcelSQLMaster</h1>
 </div>
-
-<!-- SCREENSHOTS -->
-<section id="screenshots" class="bg-gray">
-    <div class="sec-inner">
-        <div class="sec-title">See It in Action</div>
-        <div class="screenshots">
-            <div class="ss-item">
-                <img src="screenshot-datasources.png" alt="19 supported data sources including PostgreSQL, MySQL, MongoDB, S3, Parquet, SAS, SPSS and more" loading="lazy">
-                <div class="ss-caption">Connect to 19 data sources — databases, files, and cloud storage — from a single interface.</div>
-            </div>
-            <div class="ss-item">
-                <img src="screenshot-querybuilder.png" alt="Federated SQL query across Excel, CSV and MySQL in the same window" loading="lazy">
-                <div class="ss-caption">Query across XLSX sheets, CSV files, and MySQL databases in one SQL statement. Tables, columns, and types — all visible.</div>
-            </div>
-            <div class="ss-item">
-                <img src="screenshot-results.png" alt="3.1 million row query result with automatic CSV export" loading="lazy">
-                <div class="ss-caption">Handle millions of rows. Results under 1M go to Excel — larger datasets export to CSV automatically.</div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- PRICING -->
 <div class="pricing" id="pricing">
@@ -261,6 +240,27 @@
         <div class="footnote">Subscriptions renew automatically. You can cancel anytime.</div>
     </div>
 </div>
+
+<!-- SCREENSHOTS -->
+<section id="screenshots" class="bg-gray">
+    <div class="sec-inner">
+        <div class="sec-title">See It in Action</div>
+        <div class="screenshots">
+            <div class="ss-item">
+                <img src="screenshot-datasources.png" alt="19 supported data sources" loading="lazy">
+                <div class="ss-caption">19 data sources</div>
+            </div>
+            <div class="ss-item">
+                <img src="screenshot-querybuilder.png" alt="Federated SQL query" loading="lazy">
+                <div class="ss-caption">Cross-source SQL</div>
+            </div>
+            <div class="ss-item">
+                <img src="screenshot-results.png" alt="3.1 million rows" loading="lazy">
+                <div class="ss-caption">Millions of rows</div>
+            </div>
+        </div>
+    </div>
+</section>
 <section id="sources">
     <div class="sec-inner">
         <div class="sec-title">Supported Data Sources</div>
