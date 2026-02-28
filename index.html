@@ -88,11 +88,13 @@
         .footnote { font-size: 0.82rem; color: var(--g1); margin-top: 1.5rem; line-height: 1.6; text-align: center; }
 
         /* SCREENSHOTS */
-        .screenshots { display: flex; flex-direction: column; gap: 2.5rem; max-width: 780px; margin: 0 auto; }
+        .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 980px; margin: 0 auto; }
+        .ss-left { display: flex; flex-direction: column; gap: 1.2rem; }
         .ss-item { text-align: center; }
-        .ss-item img { width: 100%; border-radius: 8px; border: 1px solid var(--g4); box-shadow: 0 2px 12px rgba(0,0,0,0.06); cursor: pointer; transition: transform 0.2s; }
-        .ss-item img:hover { transform: scale(1.02); }
-        .ss-caption { font-size: 0.88rem; color: var(--g2); margin-top: 0.6rem; line-height: 1.5; }
+        .ss-item img { width: 100%; border-radius: 8px; border: 1px solid var(--g4); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .ss-caption { font-size: 0.78rem; color: var(--g2); margin-top: 0.5rem; }
+        .ss-tagline { font-size: 1.05rem; color: var(--g2); margin-top: 2rem; font-weight: 500; }
+        .ss-right { display: flex; align-items: center; }
 
         /* SECTIONS */
         section { padding: 5rem 1.5rem; }
@@ -140,7 +142,8 @@
             .nav-r a:not(.nav-cta) { display: none; }
             .cards { flex-direction: column; align-items: center; }
             .ds-item { font-size: 0.84rem; padding: 0.55rem 1rem; }
-            .screenshots { gap: 1.5rem; }
+            .screenshots { grid-template-columns: 1fr; }
+            .ss-left { gap: 1.5rem; }
         }
     </style>
 </head>
@@ -247,19 +250,24 @@
     <div class="sec-inner">
         <div class="sec-title">See It in Action</div>
         <div class="screenshots">
-            <div class="ss-item">
-                <img src="screenshot-datasources.png" alt="19 supported data sources" loading="lazy">
-                <div class="ss-caption">Connect to 19 data sources — databases, files, and cloud storage — from a single interface.</div>
+            <div class="ss-left">
+                <div class="ss-item">
+                    <img src="screenshot-datasources.png" alt="19 supported data sources" loading="lazy">
+                    <div class="ss-caption">19 data sources</div>
+                </div>
+                <div class="ss-item">
+                    <img src="screenshot-results.png" alt="3.1 million rows" loading="lazy">
+                    <div class="ss-caption">3M+ rows</div>
+                </div>
             </div>
-            <div class="ss-item">
-                <img src="screenshot-querybuilder.png" alt="Federated SQL query" loading="lazy">
-                <div class="ss-caption">Query across XLSX sheets, CSV files, and MySQL databases in one SQL statement.</div>
-            </div>
-            <div class="ss-item">
-                <img src="screenshot-results.png" alt="3.1 million rows" loading="lazy">
-                <div class="ss-caption">Handle 3+ million rows. Results under 1M go to Excel — larger datasets export to CSV automatically.</div>
+            <div class="ss-right">
+                <div class="ss-item">
+                    <img src="screenshot-querybuilder.png" alt="Federated SQL query builder" loading="lazy">
+                    <div class="ss-caption">Federated SQL query</div>
+                </div>
             </div>
         </div>
+        <p class="ss-tagline">Ready to write your own SQL — across any source, any size.</p>
     </div>
 </section>
 <section id="sources">
