@@ -1,102 +1,395 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExcelSQLMaster - Pricing</title>
-    <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+    <title>ExcelSQLMaster — Real SQL Inside Excel</title>
+    <meta name="description" content="Query CSV, PostgreSQL, MongoDB, S3 and 15 more data sources with real SQL — directly from Excel. Your data never leaves your machine.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #111827;
-            --secondary: #6b7280;
-            --success: #059669;
-            --bg: #f9fafb;
-            --card-border: #e5e7eb;
+            --black: #1d1d1f;
+            --g1: #333336;
+            --g2: #6e6e73;
+            --g3: #86868b;
+            --g4: #d2d2d7;
+            --g5: #f5f5f7;
+            --white: #fff;
+            --blue: #0071e3;
+            --blue-h: #0077ed;
+            --green: #2e7d32;
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 0; line-height: 1.5; }
-        .wrapper { max-width: 1100px; margin: 80px auto; padding: 20px; text-align: center; }
-        .header-text { margin-bottom: 50px; }
-        .header-text h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .header-text p { color: var(--secondary); font-size: 1.1rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--white); color: var(--black); line-height: 1.5; -webkit-font-smoothing: antialiased; }
 
-        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 60px; }
-        
-        .card { background: white; border: 1px solid var(--card-border); border-radius: 20px; padding: 40px 32px; position: relative; transition: transform 0.2s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
-        
-        .best-value { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #064e3b; color: white; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; }
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--g4); }
+        .nav-in { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; padding: 0 1.5rem; }
+        .logo { font-weight: 700; font-size: 1.05rem; color: var(--black); text-decoration: none; letter-spacing: -0.3px; }
+        .nav-r { display: flex; gap: 2rem; align-items: center; }
+        .nav-r a { color: var(--g2); text-decoration: none; font-size: 0.84rem; font-weight: 500; transition: color 0.2s; }
+        .nav-r a:hover { color: var(--black); }
+        .nav-cta { background: var(--blue) !important; color: var(--white) !important; padding: 0.4rem 1rem; border-radius: 980px; font-weight: 600 !important; font-size: 0.82rem !important; transition: background 0.2s !important; }
+        .nav-cta:hover { background: var(--blue-h) !important; }
 
-        .plan-name { font-size: 1.25rem; font-weight: 600; color: var(--primary); }
-        .price { font-size: 3rem; font-weight: 800; margin: 20px 0 10px; }
-        .price span { font-size: 1.125rem; color: var(--secondary); font-weight: 400; }
-        .save-badge { color: var(--success); font-weight: 600; font-size: 0.95rem; height: 24px; }
+        /* HERO */
+        .hero { padding: 7.5rem 1.5rem 2rem; text-align: center; max-width: 780px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.5px; line-height: 1.12; margin-bottom: 0.8rem; }
+        .hero-sub { font-size: 1.05rem; color: var(--g2); line-height: 1.6; max-width: 520px; margin: 0 auto 1rem; }
 
-        .features { margin: 30px 0; padding: 0; list-style: none; text-align: left; flex-grow: 1; }
-        .feature-item { display: flex; align-items: center; margin-bottom: 16px; color: #4b5563; font-size: 0.95rem; }
-        .feature-item svg { width: 20px; height: 20px; color: var(--success); margin-right: 12px; flex-shrink: 0; }
+        /* PRICING */
+        .pricing { padding: 2rem 1.5rem 4rem; text-align: center; }
+        .pricing-inner { max-width: 980px; margin: 0 auto; }
+        .pricing .sec-title { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 700; letter-spacing: -0.3px; margin-bottom: 2rem; }
+        .pricing .sec-desc { font-size: 1rem; color: var(--g2); margin-bottom: 2.5rem; }
 
-        .lemonsqueezy-button { display: block; background: #f3f4f6; color: var(--primary); text-decoration: none; padding: 14px; border-radius: 10px; font-weight: 600; transition: 0.2s; margin-top: auto; }
-        .lemonsqueezy-button:hover { background: #e5e7eb; }
+        .cards { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+        .card {
+            border: 1.5px solid var(--g4);
+            border-radius: 16px;
+            padding: 2rem 1.6rem 1.8rem;
+            width: 300px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+        .card.pop { border-color: var(--blue); }
 
-        footer { border-top: 1px solid var(--card-border); padding-top: 40px; color: var(--secondary); font-size: 0.9rem; }
-        .footer-links { margin-top: 15px; }
-        .footer-links a { color: var(--secondary); text-decoration: none; margin: 0 10px; }
-        .footer-links a:hover { text-decoration: underline; }
+        .card-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
+        .card-name { font-size: 1.15rem; font-weight: 600; }
+        .badge-soon { font-size: 0.68rem; font-weight: 600; color: var(--g3); border: 1px solid var(--g4); padding: 0.12rem 0.5rem; border-radius: 980px; }
+
+        .card-desc { font-size: 0.82rem; color: var(--g3); margin-bottom: 1.2rem; line-height: 1.4; }
+
+        .card-price { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.15rem; }
+        .card-price span { font-size: 0.82rem; font-weight: 400; color: var(--g3); }
+
+        .card-toggle { display: flex; align-items: center; gap: 0.5rem; margin: 0.8rem 0; padding-bottom: 0.8rem; border-bottom: 1px solid #e8e8ed; }
+        .sw { position: relative; width: 34px; height: 19px; flex-shrink: 0; }
+        .sw input { opacity: 0; width: 0; height: 0; }
+        .sl { position: absolute; cursor: pointer; inset: 0; background: var(--g4); border-radius: 19px; transition: .3s; }
+        .sl::before { content: ''; position: absolute; height: 13px; width: 13px; left: 3px; bottom: 3px; background: var(--white); border-radius: 50%; transition: .3s; }
+        .sw input:checked + .sl { background: var(--blue); }
+        .sw input:checked + .sl::before { transform: translateX(15px); }
+        .billed { font-size: 0.78rem; color: var(--g3); }
+        .save { font-size: 0.68rem; font-weight: 600; color: var(--green); border: 1px solid #c8e6c9; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: auto; transition: opacity .2s; }
+        .save.off { opacity: 0; }
+
+        .card-feat { list-style: none; margin: 1rem 0; flex: 1; }
+        .card-feat li { font-size: 0.82rem; color: var(--g1); padding: 0.45rem 0; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.45; }
+        .card-feat li::before { content: '✓'; color: var(--blue); font-weight: 600; flex-shrink: 0; }
+
+        .card-btn { display: block; width: 100%; padding: 0.7rem; border-radius: 10px; font-size: 0.88rem; font-weight: 600; text-align: center; text-decoration: none; background: var(--g5); color: var(--black); border: none; cursor: pointer; transition: background 0.2s; margin-top: auto; }
+        .card-btn:hover { background: #e8e8ed; }
+        .card-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .card-btn:disabled:hover { background: var(--g5); }
+
+        .footnote { font-size: 0.75rem; color: var(--g3); margin-top: 1.5rem; line-height: 1.6; }
+
+        /* SECTIONS */
+        section { padding: 5rem 1.5rem; }
+        .sec-inner { max-width: 980px; margin: 0 auto; text-align: center; }
+        .sec-label { font-size: 0.78rem; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.5rem; }
+        .sec-title { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 700; letter-spacing: -0.3px; color: var(--black); margin-bottom: 2rem; }
+        .sec-desc { font-size: 1rem; color: var(--g2); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.6; }
+        .bg-gray { background: var(--g5); }
+
+        /* DATA SOURCES */
+        .ds-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; max-width: 700px; margin: 0 auto; }
+        .ds-tag { padding: 0.5rem 1.1rem; border-radius: 8px; font-size: 0.88rem; font-weight: 500; color: var(--g1); background: var(--white); border: 1px solid var(--g4); }
+
+        /* FEATURES */
+        .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center; max-width: 900px; margin: 0 auto; }
+        .feat-card { padding: 1.5rem; }
+        .feat-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--black); margin-bottom: 0.4rem; }
+        .feat-card p { font-size: 0.9rem; color: var(--g2); line-height: 1.6; min-height: 4.3em; }
+
+        /* HOW IT WORKS */
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; text-align: center; counter-reset: step; }
+        .step { counter-increment: step; padding: 1.8rem 1.5rem; }
+        .step-num { font-size: 2rem; font-weight: 700; color: var(--g4); margin-bottom: 0.6rem; }
+        .step-num::before { content: counter(step); }
+        .step h3 { font-size: 1.05rem; font-weight: 600; color: var(--black); margin-bottom: 0.4rem; }
+        .step p { font-size: 0.9rem; color: var(--g2); line-height: 1.6; }
+
+        /* FAQ */
+        .faq-list { max-width: 640px; margin: 0 auto; text-align: left; }
+        .faq-item { border-bottom: 1px solid var(--g4); }
+        .faq-q { padding: 1.1rem 0; font-size: 0.92rem; font-weight: 600; color: var(--black); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-q::after { content: '+'; font-size: 1.3rem; color: var(--g3); transition: transform 0.2s; font-weight: 300; }
+        .faq-item.open .faq-q::after { transform: rotate(45deg); color: var(--blue); }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; font-size: 0.88rem; color: var(--g2); line-height: 1.7; }
+        .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.2rem; }
+
+        /* FOOTER */
+        footer { padding: 2.5rem 1.5rem; border-top: 1px solid var(--g4); text-align: center; }
+        .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 0.6rem; flex-wrap: wrap; }
+        .footer-links a { color: var(--g3); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--black); }
+        .footer-copy { font-size: 0.75rem; color: var(--g3); }
+
+        @media (max-width: 768px) {
+            .nav-r a:not(.nav-cta) { display: none; }
+            .cards { flex-direction: column; align-items: center; }
+            .ds-item { font-size: 0.84rem; padding: 0.55rem 1rem; }
+        }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <div class="header-text">
-        <p>Simple plans for powerful SQL querying.</p>
-    </div>
-
-    <div class="pricing-grid">
-        <div class="card">
-            <div class="plan-name">Monthly</div>
-            <div class="price">$1.99<span>/mo</span></div>
-            <div class="save-badge"></div>
-            <ul class="features">
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Full SQL Core Engine</li>
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Unlimited Queries</li>
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>In-App Support</li>
-            </ul>
-            <a href="https://yourstore.lemonsqueezy.com/checkout/buy/MONTHLY_ID" class="lemonsqueezy-button">Select Plan</a>
-        </div>
-
-        <div class="card">
-            <div class="plan-name">Quarterly</div>
-            <div class="price">$4.99<span>/3mo</span></div>
-            <div class="save-badge">Save 16%</div>
-            <ul class="features">
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Full SQL Core Engine</li>
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Unlimited Queries</li>
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>In-App Support</li>
-            </ul>
-            <a href="https://yourstore.lemonsqueezy.com/checkout/buy/QUARTERLY_ID" class="lemonsqueezy-button">Select Plan</a>
-        </div>
-
-        <div class="card">
-            <div class="best-value">BEST VALUE</div>
-            <div class="plan-name">Yearly</div>
-            <div class="price">$14.99<span>/yr</span></div>
-            <div class="save-badge">Save 37%</div>
-            <ul class="features">
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Full SQL Core Engine</li>
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>Unlimited Queries</li>
-                <li class="feature-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>In-App Support</li>
-            </ul>
-            <a href="https://yourstore.lemonsqueezy.com/checkout/buy/YEARLY_ID" class="lemonsqueezy-button">Select Plan</a>
+<nav>
+    <div class="nav-in">
+        <a href="#" class="logo">ExcelSQLMaster</a>
+        <div class="nav-r">
+            <a href="#sources">Data Sources</a>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="#faq">FAQ</a>
+            <a href="#pricing" class="nav-cta">Get Started</a>
         </div>
     </div>
+</nav>
 
-    <footer>
-        <p>© 2026 ExcelSQLMaster. Payments by Lemon Squeezy.</p>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-        </div>
-    </footer>
+<!-- HERO -->
+<div class="hero">
+    <h1>ExcelSQLMaster</h1>
 </div>
 
+<!-- PRICING -->
+<div class="pricing" id="pricing">
+    <div class="pricing-inner">
+        <div class="cards">
+
+            <!-- PERSONAL -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-name">Personal</div>
+                </div>
+                <div class="card-desc">19 data sources, analytical SQL, Excel &amp; CSV output.</div>
+                <div class="card-price" data-y="$99" data-yp="/year" data-m="$14.99" data-mp="/month">$99 <span>/year</span></div>
+                <div class="card-toggle">
+                    <label class="sw"><input type="checkbox" class="tg" checked><span class="sl"></span></label>
+                    <span class="billed">Billed annually</span>
+                    <span class="save">Save 45%</span>
+                </div>
+                <ul class="card-feat">
+                    <li>19 data sources</li>
+                    <li>Self-contained — single .xll, no dependencies</li>
+                    <li>Native C++ — no runtime, no framework needed</li>
+                    <li>In-process analytical SQL engine</li>
+                    <li>Auto-export to Excel or CSV</li>
+                    <li>Federated SQL queries</li>
+                </ul>
+                <button class="card-btn">Get Personal</button>
+            </div>
+
+            <!-- PRO -->
+            <div class="card pop">
+                <div class="card-head">
+                    <div class="card-name">Pro</div>
+                </div>
+                <div class="card-desc">Everything in Personal, plus write-back and Parquet/JSON export.</div>
+                <div class="card-price" data-y="$129" data-yp="/year" data-m="$19.99" data-mp="/month">$129 <span>/year</span></div>
+                <div class="card-toggle">
+                    <label class="sw"><input type="checkbox" class="tg" checked><span class="sl"></span></label>
+                    <span class="billed">Billed annually</span>
+                    <span class="save">Save 46%</span>
+                </div>
+                <ul class="card-feat">
+                    <li>Everything in Personal</li>
+                    <li>Write results to supported databases</li>
+                    <li>Parquet / JSON export</li>
+                </ul>
+                <button class="card-btn">Get Pro</button>
+            </div>
+
+            <!-- ENTERPRISE -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-name">Enterprise</div>
+                    <span class="badge-soon">Coming Soon</span>
+                </div>
+                <div class="card-desc">30+ data sources, scheduling, Linux &amp; LibreOffice support.</div>
+                <div class="card-price" data-y="$499" data-yp="/year" data-m="$99.99" data-mp="/month">$499 <span>/year</span></div>
+                <div class="card-toggle">
+                    <label class="sw"><input type="checkbox" class="tg" checked><span class="sl"></span></label>
+                    <span class="billed">Billed annually</span>
+                    <span class="save">Save 58%</span>
+                </div>
+                <ul class="card-feat">
+                    <li>30+ data sources — modular extensions</li>
+                    <li>In-process analytical SQL engine</li>
+                    <li>Write results to supported databases</li>
+                    <li>Parquet / JSON export</li>
+                    <li>Named tabs &amp; connection mapping</li>
+                    <li>Linux .so modules &amp; LibreOffice support</li>
+                    <li>CLI &amp; task scheduling — Windows and Linux</li>
+                </ul>
+                <button class="card-btn" disabled>Coming Soon</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- DATA SOURCES -->
+<section id="sources">
+    <div class="sec-inner">
+        <div class="sec-title">Supported Data Sources</div>
+        <div class="ds-wall">
+            <span class="ds-tag">PostgreSQL</span>
+            <span class="ds-tag">CSV / TSV</span>
+            <span class="ds-tag">MySQL</span>
+            <span class="ds-tag">Parquet</span>
+            <span class="ds-tag">MongoDB</span>
+            <span class="ds-tag">SAS</span>
+            <span class="ds-tag">Amazon S3</span>
+            <span class="ds-tag">MSSQL</span>
+            <span class="ds-tag">XLSX</span>
+            <span class="ds-tag">Stata</span>
+            <span class="ds-tag">MariaDB</span>
+            <span class="ds-tag">Google Cloud Storage</span>
+            <span class="ds-tag">SQLite</span>
+            <span class="ds-tag">SPSS</span>
+            <span class="ds-tag">JSON</span>
+            <span class="ds-tag">DuckDB</span>
+            <span class="ds-tag">Azure Blob</span>
+            <span class="ds-tag">SAP</span>
+            <span class="ds-tag">HTTP</span>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+    <div class="sec-inner">
+        <div class="sec-title">How It's Built</div>
+        <div class="sec-desc">A native C++ XLL add-in with an embedded analytical SQL engine. No external processes, no dependencies.</div>
+        <div class="feat-grid">
+            <div class="feat-card">
+                <h3>Single File, No Dependencies</h3>
+                <p>Native C++, statically linked into a single .xll file. No .NET, no Java, no Python runtime. Nothing else to install.</p>
+            </div>
+            <div class="feat-card">
+                <h3>Runs Inside Excel</h3>
+                <p>In-process add-in. No external executables, no background services launched.</p>
+            </div>
+            <div class="feat-card">
+                <h3>Automatic Output Routing</h3>
+                <p>Under 1,048,576 rows goes to Excel. Larger results export to CSV automatically.</p>
+            </div>
+            <div class="feat-card">
+                <h3>Federated Queries</h3>
+                <p>Query across any combination of the 19 supported sources in a single SQL statement.</p>
+            </div>
+            <div class="feat-card">
+                <h3>Pro: Write-Back &amp; Export</h3>
+                <p>Write query results to MySQL, PostgreSQL, MSSQL and more. Export to Parquet and JSON.</p>
+            </div>
+            <div class="feat-card">
+                <h3>Enterprise: CLI &amp; Scheduling</h3>
+                <p>30+ data sources, Linux .so modules, LibreOffice support, and task scheduling.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="bg-gray" id="how">
+    <div class="sec-inner">
+        <div class="sec-title">How It Works</div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num"></div>
+                <h3>Connect</h3>
+                <p>Click Add Table to connect sources — files, databases, or cloud storage. Tables and columns appear in the right panel.</p>
+            </div>
+            <div class="step">
+                <div class="step-num"></div>
+                <h3>Query</h3>
+                <p>Select columns from the right panel. The SQL query is generated automatically. Edit it to write the exact query you need.</p>
+            </div>
+            <div class="step">
+                <div class="step-num"></div>
+                <h3>Export</h3>
+                <p>Personal: results under 1,048,576 rows go to Excel, larger results export to CSV. Pro adds Parquet, JSON, and database write-back.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="sec-inner">
+        <div class="sec-title">FAQ</div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q">Does my data leave my machine?</div>
+                <div class="faq-a">No. The SQL engine runs locally on your machine. No telemetry, no cloud processing. When you connect to an external database, the connection goes directly from your machine to the server.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What versions of Excel are supported?</div>
+                <div class="faq-a">64-bit Excel on Windows: Excel 2016, 2019, 2021, 2024, and Microsoft 365. macOS is not supported.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How is this different from Power Query?</div>
+                <div class="faq-a">Power Query uses Microsoft's M language. ExcelSQLMaster uses standard SQL — the same language your databases already speak. It also connects to sources Power Query doesn't support natively: Parquet, SAS, Stata, SPSS, DuckDB, and cloud object storage.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Can I JOIN across different data sources?</div>
+                <div class="faq-a">Yes. You can query across any combination of the 19 supported sources in a single SQL statement.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What happens with large datasets?</div>
+                <div class="faq-a">The engine uses available RAM and spills to disk when needed. Export options depend on your plan — see the pricing section for details.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Can I cancel anytime?</div>
+                <div class="faq-a">Yes. Both monthly and yearly plans can be cancelled at any time. Yearly plans stay active until the end of the billing period.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="/cdn-cgi/l/email-protection#3c4f494c4c534e487c59445f59504f4d50515d4f48594e125f5351">Contact</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 ExcelSQLMaster. Payments processed by Paddle.</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Billing toggles
+document.querySelectorAll('.tg').forEach(tg => {
+    tg.addEventListener('change', () => {
+        const card = tg.closest('.card');
+        const pr = card.querySelector('.card-price');
+        const bl = card.querySelector('.billed');
+        const sv = card.querySelector('.save');
+        if (tg.checked) {
+            pr.innerHTML = pr.dataset.y + ' <span>' + pr.dataset.yp + '</span>';
+            bl.textContent = 'Billed annually';
+            sv.classList.remove('off');
+        } else {
+            pr.innerHTML = pr.dataset.m + ' <span>' + pr.dataset.mp + '</span>';
+            bl.textContent = 'Billed monthly';
+            sv.classList.add('off');
+        }
+    });
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+        const item = q.parentElement;
+        document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+        item.classList.toggle('open');
+    });
+});
+</script>
 </body>
 </html>
