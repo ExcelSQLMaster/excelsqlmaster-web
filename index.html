@@ -90,11 +90,12 @@
         /* SCREENSHOTS */
         .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 980px; margin: 0 auto; }
         .ss-left { display: flex; flex-direction: column; gap: 1.2rem; }
+        .ss-right { display: flex; flex-direction: column; }
+        .ss-right .ss-item { flex: 1; display: flex; flex-direction: column; }
+        .ss-right .ss-item img { flex: 1; object-fit: cover; object-position: top; }
         .ss-item { text-align: center; }
         .ss-item img { width: 100%; border-radius: 8px; border: 1px solid var(--g4); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
         .ss-caption { font-size: 0.78rem; color: var(--g2); margin-top: 0.5rem; }
-        .ss-tagline { font-size: 1.05rem; color: var(--g2); margin-top: 2rem; font-weight: 500; }
-        .ss-right { display: flex; align-items: center; }
 
         /* SECTIONS */
         section { padding: 5rem 1.5rem; }
@@ -143,7 +144,7 @@
             .cards { flex-direction: column; align-items: center; }
             .ds-item { font-size: 0.84rem; padding: 0.55rem 1rem; }
             .screenshots { grid-template-columns: 1fr; }
-            .ss-left { gap: 1.5rem; }
+            .ss-right .ss-item img { object-fit: contain; }
         }
     </style>
 </head>
@@ -256,7 +257,7 @@
                     <div class="ss-caption">19 data sources</div>
                 </div>
                 <div class="ss-item">
-                    <img src="screenshot-results.png" alt="3.1 million rows" loading="lazy">
+                    <img src="screenshot-results.png" alt="Query results preview" loading="lazy">
                     <div class="ss-caption">Query results preview</div>
                 </div>
             </div>
